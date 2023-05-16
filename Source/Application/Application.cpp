@@ -1,20 +1,33 @@
 #include "Application/Application.h"
 
-#include <Windows.h>
+#include "Application/Window.h"
 
-bool Application::Initialize()
+LRESULT CALLBACK Application_MainWindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+bool Application::Initialize(HINSTANCE hInst, int nCmdShow)
 {
-    // MessageBoxW(
-    //     _In_opt_ HWND hWnd,
-    //     _In_opt_ LPCWSTR lpText,
-    //     _In_opt_ LPCWSTR lpCaption,
-    //     _In_ UINT uType);
-    MessageBoxW(
-        NULL,               // elimizde henuz bir pencere handle'i olmadigi icin NULL
-        L"Merhaba!",        // Mesaj kutusunda yazacak olan text
-        L"Mesaj Penceresi", // Mesaj penceresinin basligi
-        MB_OK | MB_ICONINFORMATION // Mesaj penceresinde olacak tuslar: "OK", kullanilacak ikon "ICONINFORMATION"
-    );
+    WindowCreateParams WindowParams = {};
+    WindowParams.iHeight = 600;
+    WindowParams.iWidth = 900;
+    WindowParams.iPositionX = 100;
+    WindowParams.iPositionY = 100;
+    WindowParams.hInstance = hInst;
+    WindowParams.lpfnWndProc = Application_MainWindowProcedure;
+    WindowParams.strWindowTitle = L"DX11Motor";
+    WindowParams.nCmdShow = nCmdShow;
+    Window wnd = Window::Create(WindowParams);
+    
+    // test window
+    Sleep(1000);
+    wnd.Maximize();
+    Sleep(1000);
+    wnd.Minimize();
+    wnd.Show();
+    Sleep(1000);
+    wnd.Hide();
+    Sleep(1000);
+    wnd.Show();
+    Sleep(1000);
 
     return true;
 }
@@ -34,4 +47,17 @@ void Application::Unload()
 
 void Application::UpdateAndRender()
 {
+}
+
+
+LRESULT CALLBACK Application_MainWindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
 }

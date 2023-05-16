@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 class Application
 {
 public:
@@ -10,7 +12,7 @@ public:
 	// 
 	// - isletim sisteminden bellek isteme
 	// - cesitli sistemleri hazirlama
-	static bool Initialize();
+	static bool Initialize(HINSTANCE hInst, int nCmdShow);
 
 	// Programimizi kapatirken izlenen prosedurleri icerir.
 	//
